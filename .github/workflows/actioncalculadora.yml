@@ -1,36 +1,69 @@
-# This is a basic workflow to help you get started with Actions
-
-name: CI
+name: valida calculadora
 
 # Controls when the workflow will run
+# Controla quando o fluxo de trabalho será executado
+
 on:
-  # Triggers the workflow on push or pull request events but only for the "main" branch
+
+# Triggers the workflow on push or pull request events but only for the "main" branch
+
+# Aciona o fluxo de trabalho em eventos de solicitação push ou pull, mas apenas para o branch "principal"
+
   push:
     branches: [ "main" ]
   pull_request:
     branches: [ "main" ]
 
-  # Allows you to run this workflow manually from the Actions tab
-  workflow_dispatch:
-
-# A workflow run is made up of one or more jobs that can run sequentially or in parallel
 jobs:
-  # This workflow contains a single job called "build"
+ # This workflow contains a single job called "build"
+ # Este fluxo de trabalho contém um único trabalho chamado "build"
+
   build:
-    # The type of runner that the job will run on
+  #construir
+
+  # The type of runner that the job will run on
+ 
+    # O tipo de executor em que o trabalho será executado
+
     runs-on: ubuntu-latest
 
-    # Steps represent a sequence of tasks that will be executed as part of the job
     steps:
-      # Checks-out your repository under $GITHUB_WORKSPACE, so your job can access it
-      - uses: actions/checkout@v3
 
-      # Runs a single command using the runners shell
+    # Steps represent a sequence of tasks that will be executed as part of the job
+    # Steps represent a sequence of tasks that will be executed as part of the job
       - name: Run a one-line script
         run: echo Hello, world!
 
-      # Runs a set of commands using the runners shell
-      - name: Run a multi-line script
-        run: |
-          echo Add other actions to build,
-          echo test, and deploy your project.
+  #Deploy (Implantação): significa salvar a aplicação feita em uma pasta e configurar a JVM para ler e executar este programa.
+
+  deploy-dev:
+    runs-on: ubuntu-latest
+    environment:
+      name: dev
+    needs: build
+    steps:
+      - name: Run a one-line script
+        run: echo Deploy Dev
+
+
+  deploy-hmg:
+    runs-on: ubuntu-latest
+    environment:
+      name: hmg
+    needs: deploy-dev
+    steps:
+      - name: Run a one-line script
+        run: echo Deploy HMG
+
+
+#Deploy (Implantação): significa salvar a aplicação feita em uma pasta e configurar a JVM para ler e executar este programa.
+
+  deploy-prd:
+    runs-on: ubuntu-latest
+    environment:
+      name: prd
+    needs: deploy-hmg
+    steps:
+      - name: Run a one-line script
+        run: echo Deploy PRD
+
